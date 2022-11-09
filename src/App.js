@@ -1,17 +1,16 @@
-import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import { Main } from "./components/Main/Main";
-import { AddTask } from "./components/AddTask/AddTask";
-import { Error } from "./components/Error/Error";
-
+import './Assets/Styles/index.scss';
+import Header from './Layouts/Header/Header';
+import Footer from './Layouts/Footer/Footer';
+import Login from './Pages/Login/Login';
+import { AllRoutes } from './Routes';
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/add_task" element={<AddTask />} />
-        {/* <Route path="*" element={<Error />} /> */}
-      </Routes>
+      <Header />
+      <div className="main">
+        <AllRoutes />
+      </div>
+      <Footer />
     </div>
   );
 }
