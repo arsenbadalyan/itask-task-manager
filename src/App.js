@@ -1,8 +1,7 @@
-import './Assets/Styles/index.scss';
-import Header from './Layouts/Header/Header';
-import Footer from './Layouts/Footer/Footer';
-import Login from './Pages/Login/Login';
-import { AllRoutes } from './Routes';
+import './assets/styles/index.scss';
+import Header from './layouts/Header/Header';
+import Footer from './layouts/Footer/Footer';
+import { AllRoutes } from './routes/index';
 function App() {
   return (
     <div className="App">

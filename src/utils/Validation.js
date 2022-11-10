@@ -19,14 +19,18 @@ class Validation {
       this.validateTemplate.type.push(errorTypes.spacesError);
   }
   checkIsEmpty(text) {
-    if (text.trim().length === 0)
+    if (text !== undefined && text.trim().length === 0)
       this.validateTemplate.type.push(errorTypes.blankError);
   }
   checkPasswordLength(password) {
-    if (password.trim().length < passwordCorrectLength)
+    if (
+      password !== undefined &&
+      password.trim().length < passwordCorrectLength
+    )
       this.validateTemplate.type.push(errorTypes.passwordLengthError);
   }
   checkMail(mail) {
+    //eslint-disable-next-line
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
       this.validateTemplate.type.push(errorTypes.emailError);
     }
@@ -39,12 +43,13 @@ class Validation {
   }
   validatePassword(password) {
     this.makeTemplate();
-    this.checkIsEmpty(password);
     this.checkTextSpaces(password);
     this.checkPasswordLength(password);
     return this.checkValidation();
   }
   validateEmail(mail) {
+    console.log(mail);
+    this.makeTemplate();
     this.checkMail(mail);
     return this.checkValidation();
   }

@@ -1,4 +1,4 @@
-import '../../Assets/Styles/Submit.scss';
+import '../../assets/styles/Submit.scss';
 
 const LoginSubmit = ({ handleClick }) => {
   return (

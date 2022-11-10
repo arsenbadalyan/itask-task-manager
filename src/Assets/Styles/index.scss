@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 body {
-  background: url('../Images/bg.jpg') no-repeat;
+  background: url('../images/bg.jpg') no-repeat;
   background-size: cover;
 }
 button {
@@ -27,4 +27,19 @@ a {
 }
 .main {
   height: calc(100vh - 5rem);
+}
+.hover-animate-action > img:hover {
+  animation: animate-action 500ms;
+}
+@keyframes animate-action {
+  0% {
+    transform: rotate(10deg);
+  }
+  50%,
+  100% {
+    transform: rotate(0);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
 }

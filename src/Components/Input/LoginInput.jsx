@@ -1,4 +1,4 @@
-import '../../Assets/Styles/Input.scss';
+import '../../assets/styles/Input.scss';
 
 const LoginInput = ({ props, msg = [] }) => {
   return (
@@ -7,15 +7,16 @@ const LoginInput = ({ props, msg = [] }) => {
         {...props}
         className={`login-simple-input ${msg.length && '!border-red-500'}`}
       />
-      {msg.length > 0 &&
-        msg.map((item, index) => (
-          <span
-            key={index}
-            className="block text-sm capitalize text-red-500 font-bold"
-          >
-            {item}
-          </span>
-        ))}
+      {msg.length > 0
+        ? msg.map((item, index) => (
+            <span
+              key={index}
+              className="block text-sm capitalize text-red-500 font-bold"
+            >
+              {item}
+            </span>
+          ))
+        : null}
     </div>
   );
 };
