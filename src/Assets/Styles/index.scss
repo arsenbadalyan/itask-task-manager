@@ -10,7 +10,7 @@
 }
 body {
   background: url('../images/bg.jpg') no-repeat;
-  background-size: cover;
+  background-size: 100%;
 }
 button {
   font: inherit;
@@ -23,10 +23,14 @@ a {
 }
 .App {
   width: 100vw;
-  height: calc(100vh - 2rem);
+  min-height: 100vh;
+  background: url('../images/bg.jpg') no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
 }
 .main {
-  height: calc(100vh - 5rem);
+  height: 100%;
 }
 .hover-animate-action > img:hover {
   animation: animate-action 500ms;

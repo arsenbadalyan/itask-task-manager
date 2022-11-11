@@ -1,12 +1,42 @@
 import taskListTypes from '../types/taskListTypes';
+const selectPlaceDefValue = {
+  value: 'work',
+  name: 'Work',
+};
+export const createListItem = (id) => {
+  return {
+    id,
+    name: '',
+    desc: '',
+    finishStatus: new Date(),
+    place: selectPlaceDefValue.value,
+    finishDate: new Date(),
+  };
+};
 const initialTaskListState = {
-  mainNames: [
-    { name: 'name', type: 'text-input', plHolder: 'Name' },
-    { name: 'Description', type: 'text-input', plHolder: 'Description' },
+  mainTaskInfo: [
+    { name: 'name', type: 'text-input', plHolder: 'Name', defValue: '' },
+    { name: 'desc', type: 'text-input', plHolder: 'Description', defValue: '' },
     {
-      name: 'place-to-do',
+      name: 'place',
       type: 'select-option',
       plHolder: 'Place To Do This Task',
+      defValue: selectPlaceDefValue.value,
+      options: {
+        selectedItem: {
+          value: selectPlaceDefValue.value,
+          name: selectPlaceDefValue.name,
+        },
+        defaultValue: {
+          value: 'default',
+          name: 'Select where you would do Task',
+        },
+        list: [
+          selectPlaceDefValue,
+          { value: 'home', name: 'Home' },
+          { value: 'street', name: 'In Street' },
+        ],
+      },
     },
   ],
   list: [
@@ -23,7 +53,7 @@ const initialTaskListState = {
       name: 'Test Task',
       desc: 'We’ve created actionTypes object, where a key is our action type and value is a function. ',
       finishStatus: false,
-      place: 'in street',
+      place: 'street',
       finishDate: new Date(),
     },
     {
@@ -38,6 +68,7 @@ const initialTaskListState = {
 };
 export const taskListReducer = (state = initialTaskListState, action) => {
   const type = action.type ?? '';
+  let list = state.list;
   // console.log(state);
   const actionTypes = {
     [taskListTypes.UPDATE_ALL_STATE]: () => {
@@ -65,6 +96,24 @@ export const taskListReducer = (state = initialTaskListState, action) => {
     [taskListTypes.DELETE_TASK_FINISH_STATUS]: () => {
       let list = state.list;
       list = list.filter((listItem) => listItem.id !== action.payload.id);
+      return {
+        ...state,
+        list,
+      };
+    },
+    // Adding New Task
+    [taskListTypes.CREATE_NEW_TASK]: () => {
+      let list = state.list;
+      list.push(action.payload);
+      return {
+        ...state,
+        list,
+      };
+    },
+    // Update Task
+    [taskListTypes.UPDATE_TASK_LIST_ITEM]: () => {
+      const index = list.findIndex((item) => item.id === action.payload.id);
+      list[index] = action.payload;
       return {
         ...state,
         list,

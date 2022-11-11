@@ -1,11 +1,10 @@
 export const passwordCorrectLength = 3;
-export const taskDoPlaces = ['home', 'work', 'in street'];
 export const taskListHeaders = [
-  'Status',
   'Name',
   'Description',
   'Place To Do',
-  'Finish Date',
+  'Status',
+  'Deadline',
   'Actions',
 ];
-export const taskListWidth = [5, 15, 53, 10, 10, 7];
+export const taskListWidth = [15, 53, 10, 5, 10, 7];

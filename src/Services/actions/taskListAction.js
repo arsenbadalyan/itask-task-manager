@@ -2,7 +2,7 @@ import taskListTypes from '../types/taskListTypes';
 export const taskListAction = {
   // All State
   [taskListTypes.READ_ALL_STATE]: ({ taskList }) => {
-    return taskList.list;
+    return taskList;
   },
   [taskListTypes.UPDATE_ALL_STATE]: (newState) => {
     return {
@@ -32,6 +32,19 @@ export const taskListAction = {
         id,
         status,
       },
+    };
+  },
+  // Add New Task
+  [taskListTypes.CREATE_NEW_TASK]: (task) => {
+    return {
+      type: taskListTypes.CREATE_NEW_TASK,
+      payload: task,
+    };
+  },
+  [taskListTypes.UPDATE_TASK_LIST_ITEM]: (newTask) => {
+    return {
+      type: taskListTypes.UPDATE_TASK_LIST_ITEM,
+      payload: newTask,
     };
   },
 };
