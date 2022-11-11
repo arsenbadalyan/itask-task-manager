@@ -8,3 +8,4 @@ export const taskListHeaders = [
   'Actions',
 ];
 export const taskListWidth = [15, 53, 10, 5, 10, 7];
+export const pageMaxLimit = 2;
