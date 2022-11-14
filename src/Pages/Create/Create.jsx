@@ -146,7 +146,6 @@ const Create = () => {
             />
           );
         } else if (info.type === 'select-option') {
-          console.log(info);
           return (
             <SelectOption
               key={index}
