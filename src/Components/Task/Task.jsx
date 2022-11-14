@@ -2,28 +2,18 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import deleteImage from '../../assets/images/actions/delete.png';
 import editImage from '../../assets/images/actions/edit.png';
+import { getDate } from '../../utils/dateTime';
 import { taskListAction } from '../../services/actions/taskListAction';
 import taskListTypes from '../../services/types/taskListTypes';
+import { listItemTypes } from '../../services/reducers/taskListReducer';
+
 const Task = ({ taskInfo }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getDate = (date) => {
-    const checkZero = (num) => {
-      return num < 10 ? '0' + num : num;
-    };
-    const time =
-      checkZero(date.getHours()) + ':' + checkZero(date.getMinutes());
-    const today =
-      checkZero(date.getDay()) +
-      '.' +
-      checkZero(date.getMonth()) +
-      '\n' +
-      date.getFullYear();
-    return `${today} \n ${time}`;
-  };
+
   const handleTaskEdit = () => {
     navigate('/edit/' + taskInfo.id, {
-      state: { task: taskInfo, isValid: true },
+      state: { task: taskInfo, isValid: true, page: 'edit' },
     });
   };
   const handleTaskDelete = () => {
@@ -35,26 +25,33 @@ const Task = ({ taskInfo }) => {
     );
   };
   return (
-    <div className="flex flex-row w-[100%] bg-custom-white justify-between items-center p-3 gap-3 break-words">
-      <div className={`w-[15%] text-center`}>
-        <p>{taskInfo.name}</p>
+    <div className="tl-table flex flex-row w-[100%] bg-white justify-between items-center p-3 gap-3 break-words shadow-2xl hover:bg-custom-white hover:cursor-default">
+      <div className={`tl-table__item text-center`}>
+        <p>{taskInfo[listItemTypes.NAME]}</p>
       </div>
-      <div className={`w-[53%]`}>
-        <p>{taskInfo.desc}</p>
+      <div className={`tl-table__item`}>
+        <p>{taskInfo[listItemTypes.DESC]}</p>
       </div>
-      <div className={`w-[10%] text-center`}>
-        <p>{taskInfo.place}</p>
+      <div className={`tl-table__item text-center`}>
+        <p>{taskInfo[listItemTypes.PLACE].name}</p>
       </div>
-      <div className={`w-[5%] text-center`}>
-        <p></p>
+      <div className={`tl-table__item text-center`}>
+        <p
+          style={{
+            color: taskInfo[listItemTypes.FINISH_STATUS].color,
+            fontWeight: 'bold',
+          }}
+        >
+          {taskInfo[listItemTypes.FINISH_STATUS].name}
+        </p>
       </div>
-      <div className={`w-[10%]`}>
+      <div className={`tl-table__item`}>
         <p className="whitespace-pre-line text-center">
-          {getDate(taskInfo.finishDate)}
+          {getDate(taskInfo[listItemTypes.FINISH_DATE])}
         </p>
       </div>
       <div
-        className={`flex flex-row gap-1 w-[7%] [&>img]:w-[50%] [&>img]:cursor-pointer hover-animate-action`}
+        className={`flex flex-row gap-1 tl-table__item [&>img]:w-[50%] [&>img]:cursor-pointer hover-animate-action`}
       >
         <img src={editImage} alt="edit" onClick={handleTaskEdit} />
         <img src={deleteImage} alt="delete" onClick={handleTaskDelete} />

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './variables';
 
 * {
   margin: 0;
@@ -46,4 +47,32 @@ a {
   75% {
     transform: rotate(-10deg);
   }
+}
+
+// Task List Styles
+// Table Width
+.tl-table {
+  &__item:nth-child(1) {
+    width: 15%;
+  }
+  &__item:nth-child(2) {
+    width: 25%;
+  }
+  &__item:nth-child(3) {
+    width: 20%;
+  }
+  &__item:nth-child(4) {
+    width: 15%;
+  }
+  &__item:nth-child(5) {
+    width: 17%;
+  }
+  &__item:nth-child(6) {
+    width: 7%;
+  }
+  // @media screen and (min-width: $mobile) and (max-width: $tablet) {
+  //   .tl-table__item {
+  //     width: 100%;
+  //   }
+  // }
 }

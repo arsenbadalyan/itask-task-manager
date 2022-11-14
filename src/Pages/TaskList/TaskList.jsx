@@ -38,7 +38,11 @@ const TaskList = () => {
           <div
             onClick={() => handlePageChange(index)}
             key={index}
-            className="px-2 py-1 cursor-pointer rounded border font-bold text-white bg-primary-color transition-all shadow-lg hover:bg-white hover:text-black"
+            className={`px-2 py-1 cursor-pointer rounded border font-bold text-white bg-primary-color transition-all shadow-lg ${
+              page === index
+                ? 'text-white bg-sec-color'
+                : 'hover:bg-white hover:text-black'
+            }`}
           >
             {index + 1}
           </div>

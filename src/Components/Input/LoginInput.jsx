@@ -1,7 +1,6 @@
 import '../../assets/styles/Input.scss';
 
-const LoginInput = ({ props, msg = [] }) => {
-  return (
+const LoginInput = ({ props, msg = [] }) =>  (
     <div className="w-[100%]">
       <input
         {...props}
@@ -19,6 +18,6 @@ const LoginInput = ({ props, msg = [] }) => {
         : null}
     </div>
   );
-};
+
 
 export default LoginInput;

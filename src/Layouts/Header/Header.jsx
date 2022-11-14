@@ -30,7 +30,7 @@ const Header = () => {
         <div className="flex flex-row gap-3 font-bold hover:[&>a]:bg-primary-color hover:[&>a]:text-white hover:[&>a]:shadow-[0_0_5px_0_gray] [&>a]:px-3 cursor-pointer">
           {checkPath() === 'tasks' || (checkPath() === '' && isActiveUser) ? (
             <>
-              <NavLink to="/create" state={{ isValid: true }}>
+              <NavLink to="/create" state={{ isValid: true, page: 'create' }}>
                 Create New Task
               </NavLink>
               <span>|</span>

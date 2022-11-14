@@ -1,6 +1,6 @@
 const SelectOption = ({ options = {}, stateOptions = {}, name = '' }) => {
   const list = options.list ?? [];
-  if (list.length < 1) return null;
+  if (list.length < 1) return <span>no options</span>;
   const makeOption = (options, name) => {
     return <option {...options}>{name}</option>;
   };

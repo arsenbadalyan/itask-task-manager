@@ -1,75 +1,100 @@
+import { tempList } from '../../config/Constants';
 import taskListTypes from '../types/taskListTypes';
-const selectPlaceDefValue = {
-  value: 'work',
-  name: 'Work',
+
+// Work With Data
+const inputTypes = {
+  TEXT: 'text-input',
+  SELECT: 'select-option',
 };
+export const taskToDoList = [
+  { value: 'work', name: 'Work' },
+  { value: 'home', name: 'Home' },
+  { value: 'street', name: 'In Street' },
+];
+export const taskStateList = [
+  { value: 'create', name: 'Created', color: 'rgb(84,84,232)' },
+  { value: 'progress', name: 'In Progress', color: 'rgb(255,132,1)' },
+  { value: 'finish', name: 'Finished', color: 'rgb(50,174,14)' },
+];
+export const listItemTypes = {
+  ID: 'id',
+  NAME: 'name',
+  DESC: 'desc',
+  PLACE: 'place',
+  FINISH_STATUS: 'finishStatus',
+  FINISH_DATE: 'finishDate',
+};
+
+// Creating Data
+const createSelectOptionData = (
+  name,
+  selectHeaderName,
+  list,
+  { edit, create }
+) => ({
+  name,
+  type: inputTypes.SELECT,
+  defValue: list[0],
+  options: {
+    defaultValue: {
+      value: 'default',
+      name: selectHeaderName,
+    },
+    list,
+  },
+  edit,
+  create,
+});
 export const createListItem = (id) => {
   return {
-    id,
-    name: '',
-    desc: '',
-    finishStatus: new Date(),
-    place: selectPlaceDefValue.value,
-    finishDate: new Date(),
+    [listItemTypes.ID]: id,
+    [listItemTypes.NAME]: '',
+    [listItemTypes.DESC]: '',
+    [listItemTypes.PLACE]: taskToDoList[0],
+    [listItemTypes.FINISH_STATUS]: taskStateList[0],
+    [listItemTypes.FINISH_DATE]: new Date(),
   };
 };
+
+// Initialize Data
 const initialTaskListState = {
   mainTaskInfo: [
-    { name: 'name', type: 'text-input', plHolder: 'Name', defValue: '' },
-    { name: 'desc', type: 'text-input', plHolder: 'Description', defValue: '' },
     {
-      name: 'place',
-      type: 'select-option',
-      plHolder: 'Place To Do This Task',
-      defValue: selectPlaceDefValue.value,
-      options: {
-        selectedItem: {
-          value: selectPlaceDefValue.value,
-          name: selectPlaceDefValue.name,
-        },
-        defaultValue: {
-          value: 'default',
-          name: 'Select where you would do Task',
-        },
-        list: [
-          selectPlaceDefValue,
-          { value: 'home', name: 'Home' },
-          { value: 'street', name: 'In Street' },
-        ],
-      },
+      name: listItemTypes.NAME,
+      type: inputTypes.TEXT,
+      plHolder: 'Name',
+      defValue: '',
+      edit: true,
+      create: true,
     },
+    {
+      name: listItemTypes.DESC,
+      type: inputTypes.TEXT,
+      plHolder: 'Description',
+      defValue: '',
+      edit: true,
+      create: true,
+    },
+    createSelectOptionData(
+      listItemTypes.PLACE,
+      'Select where you would do Task',
+      taskToDoList,
+      { edit: true, create: true }
+    ),
+    createSelectOptionData(
+      listItemTypes.FINISH_STATUS,
+      'Please select state of this task',
+      taskStateList,
+      { edit: true, create: false }
+    ),
   ],
-  list: [
-    {
-      id: 1,
-      name: 'Test Task',
-      desc: 'We’ve created actionTypes object, where a key is our action type and value is a function. Then we check, if such a key exists - we execute the function, else - we just return the initial state. I personally like this approach. It looks elegant and easy to read.',
-      finishStatus: false,
-      place: 'work',
-      finishDate: new Date(),
-    },
-    {
-      id: 2,
-      name: 'Test Task',
-      desc: 'We’ve created actionTypes object, where a key is our action type and value is a function. ',
-      finishStatus: false,
-      place: 'street',
-      finishDate: new Date(),
-    },
-    {
-      id: 3,
-      name: 'This is very long name for task',
-      desc: 'Short desc',
-      finishStatus: true,
-      place: 'home',
-      finishDate: new Date(),
-    },
-  ],
+  list: tempList,
 };
+
+// Reducers
 export const taskListReducer = (state = initialTaskListState, action) => {
   const type = action.type ?? '';
   let list = state.list;
-  // console.log(state);
   const actionTypes = {
     [taskListTypes.UPDATE_ALL_STATE]: () => {
       console.log('UPDATING');
