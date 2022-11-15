@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import CreateEdit from '../layouts/CreateEdit/CreateEdit';
+import CreateEdit from '../pages/CreateEdit/CreateEdit';
 import Login from '../pages/Login/Login';
 import TaskList from '../pages/TaskList/TaskList';
 import { getSessionState } from '../services/actions/userAction';
