@@ -21,7 +21,6 @@ const TaskList = () => {
     }
     return newList;
   }, [page, taskList.list]);
-  console.log(reverseList);
   const pageCount = Math.ceil(taskList.list.length / pageMaxLimit);
   const pageArr = new Array(pageCount).fill(0);
   const handlePageChange = (pg) => {

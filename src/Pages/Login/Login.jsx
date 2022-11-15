@@ -62,7 +62,6 @@ const Login = () => {
     password: useSelector(getPassword),
   };
   const handleInputChange = (e, item) => {
-    console.log('Value = ' + e.target.value);
     dispatch(item.dispatch(e.target.value));
     if (validationErrors[item.name].length > 0)
       handleInputFieldsCheck(item.name);
@@ -77,7 +76,6 @@ const Login = () => {
     } else if (inputType === 'password') {
       validate = input.validatePassword(password);
     } else if (inputType === 'email') {
-      console.log(email);
       validate = input.validateEmail(email);
     }
     if (validate.type.length > 0) {

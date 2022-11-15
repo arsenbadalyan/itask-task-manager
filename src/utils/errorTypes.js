@@ -5,7 +5,6 @@ export const errorTypes = {
   emailError: 'Email is incorrect',
   passwordLengthError: `Password must be minimum ${passwordCorrectLength} character length`,
   makeError: (...type) => {
-    // console.log(type);
     return {
       type,
       status: false,

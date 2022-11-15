@@ -1,13 +1,24 @@
 import useValidationError from '../../hooks/useValidtionError';
 
-const TaskInput = ({ options, validationErrors }) => {
+const TaskInput = ({ settings, options, validationErrors }) => {
   const validation = useValidationError(validationErrors);
   return (
     <div className="flex flex-col">
       <label className="font-bold text-md" htmlFor="">
-        {options.placeholder}:
+        {settings.createEditField.title}:
       </label>
-      <input className="p-2 rounded focus:shadow-primary-custom" {...options} />
+      {settings.createEditField.type === 'text' ? (
+        <input
+          className="p-2 rounded focus:shadow-primary-custom"
+          {...options}
+        />
+      ) : (
+        <textarea
+          className="p-2 rounded focus:shadow-primary-custom"
+          {...options}
+        ></textarea>
+      )}
+
       {validation}
     </div>
   );

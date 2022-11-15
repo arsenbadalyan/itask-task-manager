@@ -1,30 +1,87 @@
 import { tempList } from '../../config/Constants';
 import taskListTypes from '../types/taskListTypes';
-
+import { v4 as uuid } from 'uuid';
 // Work With Data
 const inputTypes = {
   TEXT: 'text-input',
   SELECT: 'select-option',
 };
-export const taskToDoList = [
-  { value: 'work', name: 'Work' },
-  { value: 'home', name: 'Home' },
-  { value: 'street', name: 'In Street' },
+export const taskPlaceList = [
+  { value: 'Work', name: 'work' },
+  { value: 'Home', name: 'home' },
+  { value: 'In Street', name: 'street' },
 ];
 export const taskStateList = [
-  { value: 'create', name: 'Created', color: 'rgb(84,84,232)' },
-  { value: 'progress', name: 'In Progress', color: 'rgb(255,132,1)' },
-  { value: 'finish', name: 'Finished', color: 'rgb(50,174,14)' },
+  { value: 'Create', name: 'created', color: 'rgb(84,84,232)' },
+  { value: 'In Progress', name: 'progress', color: 'rgb(255,132,1)' },
+  { value: 'Finished', name: 'finished', color: 'rgb(50,174,14)' },
 ];
-export const listItemTypes = {
-  ID: 'id',
-  NAME: 'name',
-  DESC: 'desc',
-  PLACE: 'place',
-  FINISH_STATUS: 'finishStatus',
-  FINISH_DATE: 'finishDate',
-};
+// export const listItemTypes = {
+//   ID: 'id',
+//   NAME: 'name',
+//   DESC: 'desc',
+//   PLACE: 'place',
+//   FINISH_STATUS: 'finishStatus',
+//   FINISH_DATE: 'finishDate',
+// };
 
+const createListItemType = (
+  name,
+  create = false,
+  edit = false,
+  createEditField = {},
+  defValue = '',
+  list = null
+) => ({ name, create, edit, defValue, createEditField, list });
+
+export const listItemTypes = {
+  ID: createListItemType('id'),
+  NAME: createListItemType('name', true, true, {
+    type: 'text',
+    title: 'Enter Name',
+    plHolder: 'Name',
+  }),
+  DESC: createListItemType('desc', true, true, {
+    type: 'text-area',
+    title: 'Enter Description',
+    plHolder: 'Description',
+  }),
+  PLACE: createListItemType(
+    'place',
+    true,
+    true,
+    {
+      type: 'select',
+      title: 'Select Place To Do That Task',
+      plHolder: '',
+    },
+    taskPlaceList[0],
+    taskPlaceList
+  ),
+  FINISH_STATUS: createListItemType(
+    'finishStatus',
+    false,
+    true,
+    {
+      type: 'select',
+      title: 'Select Task Status',
+      plHolder: '',
+    },
+    taskStateList[0],
+    taskStateList
+  ),
+  FINISH_DATE: createListItemType(
+    'finishDate',
+    true,
+    false,
+    {
+      type: 'date',
+      title: 'Choose finish date',
+      plHolder: '',
+    },
+    new Date()
+  ),
+};
 // Creating Data
 const createSelectOptionData = (
   name,
@@ -45,15 +102,15 @@ const createSelectOptionData = (
   edit,
   create,
 });
-export const createListItem = (id) => {
-  return {
-    [listItemTypes.ID]: id,
-    [listItemTypes.NAME]: '',
-    [listItemTypes.DESC]: '',
-    [listItemTypes.PLACE]: taskToDoList[0],
-    [listItemTypes.FINISH_STATUS]: taskStateList[0],
-    [listItemTypes.FINISH_DATE]: new Date(),
-  };
+
+export const createListItem = () => {
+  const newItem = Object.fromEntries(
+    Object.keys(listItemTypes)
+      .slice()
+      .map((type) => [listItemTypes[type].name, listItemTypes[type].defValue])
+  );
+  newItem[listItemTypes.ID.name] = uuid();
+  return newItem;
 };
 
 // Initialize Data
@@ -78,7 +135,7 @@ const initialTaskListState = {
     createSelectOptionData(
       listItemTypes.PLACE,
       'Select where you would do Task',
-      taskToDoList,
+      taskPlaceList,
       { edit: true, create: true }
     ),
     createSelectOptionData(

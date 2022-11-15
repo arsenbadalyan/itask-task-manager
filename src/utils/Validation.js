@@ -48,7 +48,6 @@ class Validation {
     return this.checkValidation();
   }
   validateEmail(mail) {
-    console.log(mail);
     this.makeTemplate();
     this.checkMail(mail);
     return this.checkValidation();

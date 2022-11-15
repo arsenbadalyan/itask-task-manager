@@ -27,27 +27,27 @@ const Task = ({ taskInfo }) => {
   return (
     <div className="tl-table flex flex-row w-[100%] bg-white justify-between items-center p-3 gap-3 break-words shadow-2xl hover:bg-custom-white hover:cursor-default">
       <div className={`tl-table__item text-center`}>
-        <p>{taskInfo[listItemTypes.NAME]}</p>
+        <p>{taskInfo[listItemTypes.NAME.name]}</p>
       </div>
       <div className={`tl-table__item`}>
-        <p>{taskInfo[listItemTypes.DESC]}</p>
+        <p>{taskInfo[listItemTypes.DESC.name]}</p>
       </div>
       <div className={`tl-table__item text-center`}>
-        <p>{taskInfo[listItemTypes.PLACE].name}</p>
+        <p>{taskInfo[listItemTypes.PLACE.name].value}</p>
       </div>
       <div className={`tl-table__item text-center`}>
         <p
           style={{
-            color: taskInfo[listItemTypes.FINISH_STATUS].color,
+            color: taskInfo[listItemTypes.FINISH_STATUS.name].color,
             fontWeight: 'bold',
           }}
         >
-          {taskInfo[listItemTypes.FINISH_STATUS].name}
+          {taskInfo[listItemTypes.FINISH_STATUS.name].value}
         </p>
       </div>
       <div className={`tl-table__item`}>
         <p className="whitespace-pre-line text-center">
-          {getDate(taskInfo[listItemTypes.FINISH_DATE])}
+          {getDate(taskInfo[listItemTypes.FINISH_DATE.name])}
         </p>
       </div>
       <div
