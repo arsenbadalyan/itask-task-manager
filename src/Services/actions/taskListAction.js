@@ -5,6 +5,13 @@ export const taskListAction = {
   [taskListTypes.READ_ALL_STATE]: ({ taskList }) => {
     return checkFilters(taskList);
   },
+  [taskListTypes.READ_TASK_LIST]: ({ taskList }) => {
+    // const revList = taskList.list.slice().reverse();
+    return checkFilters(taskList);
+  },
+  [taskListTypes.READ_FILTER_FIELD]: ({ taskList }) => {
+    return taskList.filters;
+  },
 
   // ------------ ACTION CREATORS ------------------
   // All Task State
@@ -40,4 +47,14 @@ export const taskListAction = {
       },
     };
   },
+
+  // Search Bar Change
+  [taskListTypes.UPDATE_FILTER_SEARCH]: (searchText) => {
+    return {
+      type: taskListTypes.UPDATE_FILTER_SEARCH,
+      payload: searchText,
+    };
+  },
+
+  // Asc-Desc Change
 };

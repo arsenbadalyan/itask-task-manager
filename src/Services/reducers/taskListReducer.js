@@ -1,6 +1,6 @@
 import taskListTypes from '../types/taskListTypes';
 import { v4 as uuid } from 'uuid';
-import { getDateTimeLocal } from '../../utils/dateTime';
+import { getDate, getDateTimeLocal } from '../../utils/dateTime';
 
 // Work With Data
 export const taskPlaceList = [
@@ -15,22 +15,57 @@ export const taskStateList = [
 ];
 
 const createListItemType = (
+  settings,
   name,
   create = false,
   edit = false,
-  { asc = false, search = false },
   createEditField = {},
   defValue = '',
   list = null
-) => ({ name, create, edit, asc, search, defValue, createEditField, list });
+) => ({
+  settings,
+  name,
+  create,
+  edit,
+  defValue,
+  createEditField,
+  list,
+});
 
 export const listItemTypes = {
-  ID: createListItemType('id', false, false, { asc: false, search: false }),
+  ID: createListItemType(
+    {
+      showInTable: false,
+      title: 'ID',
+      asc: false,
+      search: false,
+      style: {
+        classes: '',
+        hasColor: false,
+      },
+      changeData: {
+        change: false,
+      },
+    },
+    'id'
+  ),
   NAME: createListItemType(
+    {
+      showInTable: true,
+      title: 'Name',
+      asc: true,
+      search: true,
+      style: {
+        classes: '',
+        hasColor: false,
+      },
+      changeData: {
+        change: false,
+      },
+    },
     'name',
     true,
     true,
-    { asc: true, search: true },
     {
       type: 'text',
       title: 'Enter Name',
@@ -38,10 +73,22 @@ export const listItemTypes = {
     }
   ),
   DESC: createListItemType(
+    {
+      showInTable: true,
+      title: 'Description',
+      asc: false,
+      search: true,
+      style: {
+        classes: '',
+        hasColor: false,
+      },
+      changeData: {
+        change: false,
+      },
+    },
     'desc',
     true,
     true,
-    { asc: false, search: true },
     {
       type: 'text-area',
       title: 'Enter Description',
@@ -49,10 +96,25 @@ export const listItemTypes = {
     }
   ),
   PLACE: createListItemType(
+    {
+      showInTable: true,
+      title: 'Place To Do',
+      asc: false,
+      search: true,
+      style: {
+        classes: 'text-center',
+        hasColor: false,
+      },
+      changeData: {
+        change: true,
+        mutateData: (data) => {
+          return data.value;
+        },
+      },
+    },
     'place',
     true,
     true,
-    { asc: false, search: true },
     {
       type: 'select',
       title: 'Select Place To Do That Task',
@@ -62,10 +124,25 @@ export const listItemTypes = {
     taskPlaceList
   ),
   FINISH_STATUS: createListItemType(
+    {
+      showInTable: true,
+      title: 'Status',
+      asc: false,
+      search: true,
+      style: {
+        classes: 'text-center text-white font-bold',
+        hasColor: true,
+      },
+      changeData: {
+        change: true,
+        mutateData: (data) => {
+          return data.value;
+        },
+      },
+    },
     'finishStatus',
     false,
     true,
-    { asc: false, search: true },
     {
       type: 'select',
       title: 'Select Task Status',
@@ -75,10 +152,25 @@ export const listItemTypes = {
     taskStateList
   ),
   FINISH_DATE: createListItemType(
+    {
+      showInTable: true,
+      title: 'Finish Date',
+      asc: false,
+      search: true,
+      style: {
+        classes: 'text-center',
+        hasColor: false,
+      },
+      changeData: {
+        change: true,
+        mutateData: (data) => {
+          return getDate(data);
+        },
+      },
+    },
     'finishDate',
     true,
     true,
-    { asc: false, search: false },
     {
       type: 'date-time',
       title: 'Choose finish date',
@@ -90,9 +182,7 @@ export const listItemTypes = {
 
 const taskListInitialState = {
   filters: {
-    ID: { asc: false, search: false },
-    NAME: { asc: true, search: true },
-    PLACE: { asc: false, search: true },
+    search: '',
   },
   list: [],
 };
@@ -120,6 +210,7 @@ const initialTaskListState = () => {
 export const taskListReducer = (state = initialTaskListState(), action) => {
   const type = action.type ?? '';
   let list = state.list;
+  let filters = state.filters;
   const actionTypes = {
     // Adding New Task
     [taskListTypes.CREATE_NEW_TASK]: () => {
@@ -154,6 +245,15 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
       return {
         ...state,
         list,
+      };
+    },
+    // Search Change
+    [taskListTypes.UPDATE_FILTER_SEARCH]: () => {
+      let newFilters = Object.assign({}, filters);
+      newFilters.search = action.payload;
+      return {
+        ...state,
+        filters: newFilters,
       };
     },
   };

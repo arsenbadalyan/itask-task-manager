@@ -24,6 +24,7 @@ const Task = ({ taskInfo }) => {
       )
     );
   };
+  // console.log(r)
   return (
     <div className="tl-table flex flex-row w-[100%] bg-white justify-between items-center p-3 gap-3 break-words shadow-2xl hover:bg-custom-white hover:cursor-default">
       <div className={`tl-table__item text-center`}>
