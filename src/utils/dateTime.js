@@ -10,3 +10,8 @@ export const getDate = (date) => {
     date.getFullYear();
   return `${today} \n ${time}`;
 };
+
+export const getDateTimeLocal = (date) => {
+  date = date.toISOString().split('.')[0];
+  return date.substring(0, date.length - 3);
+};

@@ -5,6 +5,8 @@ import {
   changeSessionState,
   getSessionState,
 } from '../../services/actions/userAction';
+import { taskListAction } from '../../services/actions/taskListAction';
+import taskListTypes from '../../services/types/taskListTypes';
 const Header = () => {
   const isActiveUser = useSelector(getSessionState);
   const location = useLocation();
@@ -18,6 +20,8 @@ const Header = () => {
   };
   const handleLogOut = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('taskList');
+    dispatch(taskListAction[taskListTypes.DELETE_ALL_STATE]);
     dispatch(changeSessionState(false));
     navigate('/login');
   };

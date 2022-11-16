@@ -1,19 +1,23 @@
-const SelectOption = ({ options = {}, stateOptions = {}, name = '' }) => {
+import useLabel from '../../hooks/useLabel';
+
+const SelectOption = ({ options = {}, stateOptions = {} }) => {
+  const label = useLabel(
+    options.settings.name,
+    options.settings.createEditField.title,
+    'font-bold text-md'
+  );
   const list = options.settings.list ?? [];
   if (list.length < 1) return <span>no options</span>;
   const settings = options.settings;
   const title = settings.createEditField.title;
-  const generateID = settings.name + Math.floor(Math.random() * 20);
   const makeOption = (options, value) => {
     return <option {...options}>{value}</option>;
   };
   return (
     <div className="flex flex-col">
-      <label htmlFor={generateID} className="font-bold text-md">
-        {title}:
-      </label>
+      {label[0]}
       <select
-        id={generateID}
+        id={label[1]}
         name={settings.name}
         className="p-2 rounded cursor-pointer"
         {...stateOptions}

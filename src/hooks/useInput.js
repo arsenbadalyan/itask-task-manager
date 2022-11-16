@@ -1,10 +1,8 @@
-// import { useState } from 'react';
-// import taskListTypes from '../Services/types/taskListTypes';
-// import { taskListAction } from '../Services/actions/taskListAction';
-// import { useDispatch } from 'react-redux';
-// export const useInput = (value, clb) => {
-//   const handleInputChange = (e) => {
-//     dispatch(clb());
-//   };
-//   return { value, onChange: handleInputChange };
-// };
+import { useState } from 'react';
+
+const useInput = () => {
+  const [value, setValue] = useState('');
+  return [value, (e) => setValue(e.target.value)];
+};
+
+export default useInput;

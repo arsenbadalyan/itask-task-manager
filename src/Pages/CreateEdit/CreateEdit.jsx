@@ -13,6 +13,7 @@ import { useState } from 'react';
 import TaskSubmit from '../../components/Input/TaskSubmit';
 import validation from '../../hooks/validation';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import DateTimeLocal from '../../components/Input/DateTimeLocal';
 
 function checkPage(page, item) {
   if ((page === 'edit' && !item.edit) || (page === 'create' && !item.create))
@@ -123,6 +124,17 @@ const Create = () => {
                   handleSelectChange(e, listItem);
                 },
               }}
+            />
+          );
+        } else if (fieldType === 'date-time') {
+          return (
+            <DateTimeLocal
+              settings={listItem}
+              options={{
+                value: currentValue.value,
+                onChange: (e) => handleTextInputChange(e, listItem.name),
+              }}
+              key={index}
             />
           );
         }

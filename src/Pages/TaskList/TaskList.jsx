@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Search from '../../components/Search/Search';
 import Task from '../../components/Task/Task';
 import TaskHeader from '../../components/TaskHeader/TaskHeader';
 import { pageMaxLimit } from '../../config/Constants';
@@ -28,6 +29,7 @@ const TaskList = () => {
   };
   return (
     <div className="mx-5 my-5">
+      <Search />
       <TaskHeader />
       {reverseList.map((task) => {
         return <Task key={task.id} taskInfo={task} />;

@@ -1,55 +1,58 @@
-import { tempList } from '../../config/Constants';
 import taskListTypes from '../types/taskListTypes';
 import { v4 as uuid } from 'uuid';
+import { getDateTimeLocal } from '../../utils/dateTime';
+
 // Work With Data
-const inputTypes = {
-  TEXT: 'text-input',
-  SELECT: 'select-option',
-};
 export const taskPlaceList = [
   { value: 'Work', name: 'work' },
   { value: 'Home', name: 'home' },
   { value: 'In Street', name: 'street' },
 ];
 export const taskStateList = [
-  { value: 'Create', name: 'created', color: 'rgb(84,84,232)' },
+  { value: 'Created', name: 'created', color: 'rgb(84,84,232)' },
   { value: 'In Progress', name: 'progress', color: 'rgb(255,132,1)' },
   { value: 'Finished', name: 'finished', color: 'rgb(50,174,14)' },
 ];
-// export const listItemTypes = {
-//   ID: 'id',
-//   NAME: 'name',
-//   DESC: 'desc',
-//   PLACE: 'place',
-//   FINISH_STATUS: 'finishStatus',
-//   FINISH_DATE: 'finishDate',
-// };
 
 const createListItemType = (
   name,
   create = false,
   edit = false,
+  { asc = false, search = false },
   createEditField = {},
   defValue = '',
   list = null
-) => ({ name, create, edit, defValue, createEditField, list });
+) => ({ name, create, edit, asc, search, defValue, createEditField, list });
 
 export const listItemTypes = {
-  ID: createListItemType('id'),
-  NAME: createListItemType('name', true, true, {
-    type: 'text',
-    title: 'Enter Name',
-    plHolder: 'Name',
-  }),
-  DESC: createListItemType('desc', true, true, {
-    type: 'text-area',
-    title: 'Enter Description',
-    plHolder: 'Description',
-  }),
+  ID: createListItemType('id', false, false, { asc: false, search: false }),
+  NAME: createListItemType(
+    'name',
+    true,
+    true,
+    { asc: true, search: true },
+    {
+      type: 'text',
+      title: 'Enter Name',
+      plHolder: 'Name',
+    }
+  ),
+  DESC: createListItemType(
+    'desc',
+    true,
+    true,
+    { asc: false, search: true },
+    {
+      type: 'text-area',
+      title: 'Enter Description',
+      plHolder: 'Description',
+    }
+  ),
   PLACE: createListItemType(
     'place',
     true,
     true,
+    { asc: false, search: true },
     {
       type: 'select',
       title: 'Select Place To Do That Task',
@@ -62,6 +65,7 @@ export const listItemTypes = {
     'finishStatus',
     false,
     true,
+    { asc: false, search: true },
     {
       type: 'select',
       title: 'Select Task Status',
@@ -73,35 +77,25 @@ export const listItemTypes = {
   FINISH_DATE: createListItemType(
     'finishDate',
     true,
-    false,
+    true,
+    { asc: false, search: false },
     {
-      type: 'date',
+      type: 'date-time',
       title: 'Choose finish date',
       plHolder: '',
     },
-    new Date()
+    getDateTimeLocal(new Date())
   ),
 };
-// Creating Data
-const createSelectOptionData = (
-  name,
-  selectHeaderName,
-  list,
-  { edit, create }
-) => ({
-  name,
-  type: inputTypes.SELECT,
-  defValue: list[0],
-  options: {
-    defaultValue: {
-      value: 'default',
-      name: selectHeaderName,
-    },
-    list,
+
+const taskListInitialState = {
+  filters: {
+    ID: { asc: false, search: false },
+    NAME: { asc: true, search: true },
+    PLACE: { asc: false, search: true },
   },
-  edit,
-  create,
-});
+  list: [],
+};
 
 export const createListItem = () => {
   const newItem = Object.fromEntries(
@@ -114,79 +108,24 @@ export const createListItem = () => {
 };
 
 // Initialize Data
-const initialTaskListState = {
-  mainTaskInfo: [
-    {
-      name: listItemTypes.NAME,
-      type: inputTypes.TEXT,
-      plHolder: 'Name',
-      defValue: '',
-      edit: true,
-      create: true,
-    },
-    {
-      name: listItemTypes.DESC,
-      type: inputTypes.TEXT,
-      plHolder: 'Description',
-      defValue: '',
-      edit: true,
-      create: true,
-    },
-    createSelectOptionData(
-      listItemTypes.PLACE,
-      'Select where you would do Task',
-      taskPlaceList,
-      { edit: true, create: true }
-    ),
-    createSelectOptionData(
-      listItemTypes.FINISH_STATUS,
-      'Please select state of this task',
-      taskStateList,
-      { edit: true, create: false }
-    ),
-  ],
-  list: tempList,
+const initialTaskListState = () => {
+  let list = { filters: [], list: [] };
+  if (localStorage.getItem('taskList')) {
+    list = JSON.parse(localStorage.getItem('taskList'));
+  }
+  return list;
 };
 
 // Reducers
-export const taskListReducer = (state = initialTaskListState, action) => {
+export const taskListReducer = (state = initialTaskListState(), action) => {
   const type = action.type ?? '';
   let list = state.list;
   const actionTypes = {
-    [taskListTypes.UPDATE_ALL_STATE]: () => {
-      console.log('UPDATING');
-      return state;
-    },
-    [taskListTypes.DELETE_ALL_STATE]: () => {
-      console.log('DELETING...');
-      return state;
-    },
-    [taskListTypes.UPDATE_TASK_FINISH_STATUS]: () => {
-      let list = state.list;
-      list = list.map((listItem) => {
-        if (listItem.id === action.payload.id) {
-          listItem.finishStatus = action.payload.status;
-          listItem.finishDate = new Date();
-        }
-        return listItem;
-      });
-      return {
-        ...state,
-        list,
-      };
-    },
-    [taskListTypes.DELETE_TASK_FINISH_STATUS]: () => {
-      let list = state.list;
-      list = list.filter((listItem) => listItem.id !== action.payload.id);
-      return {
-        ...state,
-        list,
-      };
-    },
     // Adding New Task
     [taskListTypes.CREATE_NEW_TASK]: () => {
       let list = state.list;
       list.push(action.payload);
+      localStorage.setItem('taskList', JSON.stringify(state));
       return {
         ...state,
         list,
@@ -196,6 +135,22 @@ export const taskListReducer = (state = initialTaskListState, action) => {
     [taskListTypes.UPDATE_TASK_LIST_ITEM]: () => {
       const index = list.findIndex((item) => item.id === action.payload.id);
       list[index] = action.payload;
+      localStorage.setItem('taskList', JSON.stringify(state));
+      return {
+        ...state,
+        list,
+      };
+    },
+    // Reset Task List
+    [taskListTypes.DELETE_ALL_STATE]: () => {
+      state = taskListInitialState;
+      return state;
+    },
+    // Delete Task
+    [taskListTypes.DELETE_TASK]: () => {
+      let list = state.list;
+      list = list.filter((listItem) => listItem.id !== action.payload.id);
+      localStorage.setItem('taskList', JSON.stringify({ ...state, list }));
       return {
         ...state,
         list,

@@ -109,7 +109,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-[90%] sm:w-[50%] h-[100%] m-auto flex flex-col justify-center items-center transition-all">
+    <div className="w-[90%] sm:w-[50%] h-[100%] m-auto flex flex-col justify-center items-center transition-all absolute left-0 top-0 bottom-0 right-0">
       <div className="w-[100%] flex flex-col items-center gap-3 bg-white px-6 py-4 rounded-xl shadow-lg shadow-sec-color">
         <div>
           <p className="text-2xl text-center font-bold font-mono">Sign In</p>

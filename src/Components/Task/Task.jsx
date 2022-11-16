@@ -18,7 +18,7 @@ const Task = ({ taskInfo }) => {
   };
   const handleTaskDelete = () => {
     dispatch(
-      taskListAction[taskListTypes.DELETE_TASK_FINISH_STATUS](
+      taskListAction[taskListTypes.DELETE_TASK](
         taskInfo.id,
         !taskInfo.finishStatus
       )
@@ -47,7 +47,7 @@ const Task = ({ taskInfo }) => {
       </div>
       <div className={`tl-table__item`}>
         <p className="whitespace-pre-line text-center">
-          {getDate(taskInfo[listItemTypes.FINISH_DATE.name])}
+          {getDate(new Date(taskInfo[listItemTypes.FINISH_DATE.name]))}
         </p>
       </div>
       <div

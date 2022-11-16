@@ -1,8 +1,3 @@
-import {
-  taskStateList,
-  taskToDoList,
-} from '../services/reducers/taskListReducer';
-
 export const passwordCorrectLength = 3;
 export const taskListHeaders = [
   'Name',
@@ -13,7 +8,7 @@ export const taskListHeaders = [
   'Actions',
 ];
 export const taskListWidth = [15, 33, 10, 5, 10, 7];
-export const pageMaxLimit = 2;
+export const pageMaxLimit = 10;
 export const tempList = [
   {
     id: 1,
