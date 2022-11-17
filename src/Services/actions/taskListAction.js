@@ -57,4 +57,10 @@ export const taskListAction = {
   },
 
   // Asc-Desc Change
+  [taskListTypes.UPDATE_FILTER_ASC]: (field) => {
+    return {
+      type: taskListTypes.UPDATE_FILTER_ASC,
+      payload: field,
+    };
+  },
 };

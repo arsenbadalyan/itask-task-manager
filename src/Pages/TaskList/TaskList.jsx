@@ -18,7 +18,7 @@ const TaskList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const taskList = useSelector(taskListAction[taskListTypes.READ_TASK_LIST]);
-  // const filters = useSelector()
+  const filters = useSelector(taskListAction[taskListTypes.READ_FILTER_FIELD]);
   const showInTableTaskTypes = useMemo(() => {
     return Object.values(listItemTypes).filter(
       (item) => item.settings.showInTable
@@ -51,7 +51,9 @@ const TaskList = () => {
     return (
       <td
         key={index + index * 3}
-        className={`${settings.style.classes}`}
+        className={`${settings.style.classes} ${
+          filters.asc.field === item.name ? 'bg-custom-gray font-bold' : ''
+        }`}
         style={
           settings.style.hasColor
             ? { backgroundColor: task[item.name].color }
@@ -77,8 +79,7 @@ const TaskList = () => {
     );
   };
   const handleAscBtn = (typeInfo) => {
-    console.log(typeInfo);
-    // dispatch();
+    dispatch(taskListAction[taskListTypes.UPDATE_FILTER_ASC](typeInfo.name));
   };
 
   return (
@@ -99,6 +100,7 @@ const TaskList = () => {
             <th className="py-2 cursor-default">№</th>
             {showInTableTaskTypes.map((item, index) => {
               const isAvailableAsc = item.settings.asc;
+              const { isAsc, field } = filters.asc;
               return (
                 <th
                   className={`py-2 cursor-default ${
@@ -110,7 +112,18 @@ const TaskList = () => {
                   key={index}
                 >
                   {item.settings.title}
-                  {isAvailableAsc ? <span> &#8593;&#8595;</span> : null}
+                  {/* {isAvailableAsc ? <span> &#8593;&#8595;</span> : null} */}
+                  {isAvailableAsc ? (
+                    typeof isAsc === 'boolean' && field === item.name ? (
+                      isAsc ? (
+                        <span> &#8595;</span>
+                      ) : (
+                        <span> &#8593;</span>
+                      )
+                    ) : (
+                      <span> &#8593;&#8595;</span>
+                    )
+                  ) : null}
                 </th>
               );
             })}

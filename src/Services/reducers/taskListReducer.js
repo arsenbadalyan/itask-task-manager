@@ -99,7 +99,7 @@ export const listItemTypes = {
     {
       showInTable: true,
       title: 'Place To Do',
-      asc: false,
+      asc: true,
       search: true,
       style: {
         classes: 'text-center',
@@ -155,7 +155,7 @@ export const listItemTypes = {
     {
       showInTable: true,
       title: 'Finish Date',
-      asc: false,
+      asc: true,
       search: true,
       style: {
         classes: 'text-center',
@@ -183,6 +183,8 @@ export const listItemTypes = {
 const taskListInitialState = {
   filters: {
     search: '',
+    asc: { isAsc: null, field: '' },
+    detail: {},
   },
   list: [],
 };
@@ -199,7 +201,7 @@ export const createListItem = () => {
 
 // Initialize Data
 const initialTaskListState = () => {
-  let list = { filters: [], list: [] };
+  let list = taskListInitialState;
   if (localStorage.getItem('taskList')) {
     list = JSON.parse(localStorage.getItem('taskList'));
   }
@@ -210,7 +212,7 @@ const initialTaskListState = () => {
 export const taskListReducer = (state = initialTaskListState(), action) => {
   const type = action.type ?? '';
   let list = state.list;
-  let filters = state.filters;
+  let filters = Object.assign({}, state.filters);
   const actionTypes = {
     // Adding New Task
     [taskListTypes.CREATE_NEW_TASK]: () => {
@@ -254,6 +256,33 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
       return {
         ...state,
         filters: newFilters,
+      };
+    },
+    // Asc or Desc Change
+    [taskListTypes.UPDATE_FILTER_ASC]: () => {
+      console.log(action);
+      console.log(filters);
+      const oldField = filters.asc.field;
+      let field = action.payload;
+      let isAsc = filters.asc.isAsc;
+      if (field !== oldField) {
+        isAsc = true;
+        field = field;
+      } else {
+        if (isAsc === null) {
+          isAsc = true;
+        } else if (isAsc === true) {
+          isAsc = !isAsc;
+        } else {
+          isAsc = null;
+          field = '';
+        }
+      }
+      filters.asc = { isAsc, field };
+      console.log(filters);
+      return {
+        ...state,
+        filters,
       };
     },
   };
