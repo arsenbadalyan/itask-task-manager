@@ -1,5 +1,5 @@
 import useLabel from '../../hooks/useLabel';
-import useValidationError from '../../hooks/useValidtionError';
+import useValidationError from '../../hooks/useValidationError';
 
 const TaskInput = ({ settings, options, validationErrors }) => {
   const validation = useValidationError(validationErrors);

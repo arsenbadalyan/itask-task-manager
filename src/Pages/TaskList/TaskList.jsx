@@ -1,11 +1,6 @@
-import { data } from 'autoprefixer';
-import { useEffect, useMemo } from 'react';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Search from '../../components/Search/Search';
-import Task from '../../components/Task/Task';
-import TaskHeader from '../../components/TaskHeader/TaskHeader';
-import { pageMaxLimit } from '../../config/Constants';
 import TaskListTable from '../../layouts/TaskListTable/TaskListTable';
 import { taskListAction } from '../../services/actions/taskListAction';
 import { listItemTypes } from '../../services/reducers/taskListReducer';
@@ -13,36 +8,73 @@ import taskListTypes from '../../services/types/taskListTypes';
 import deleteImage from '../../assets/images/actions/delete.png';
 import editImage from '../../assets/images/actions/edit.png';
 import { useNavigate } from 'react-router-dom';
-import { searchText } from '../../middleware/checkFilters';
 import Filters from '../../components/Filters/Filters';
+import { pageMaxLimit } from '../../config/Constants';
 const TaskList = () => {
+  // Navigation
   const navigate = useNavigate();
+  // Redux
   const dispatch = useDispatch();
   const taskList = useSelector(taskListAction[taskListTypes.READ_TASK_LIST]);
   const filters = useSelector(taskListAction[taskListTypes.READ_FILTER_FIELD]);
+  // Task Types that Will Be shown in table
   const showInTableTaskTypes = useMemo(() => {
     return Object.values(listItemTypes).filter(
       (item) => item.settings.showInTable
     );
   }, []);
-  // const [page, setPage] = useState(0);
-  // const reverseList = useMemo(() => {
-  //   const revList = taskList.list.slice().reverse();
-  //   const newList = [];
-  //   for (
-  //     let j = 0, i = page * pageMaxLimit + j;
-  //     j < pageMaxLimit;
-  //     j++, i = page * pageMaxLimit + j
-  //   ) {
-  //     revList[i] ? newList.push(revList[i]) : (j = pageMaxLimit);
-  //   }
-  //   return newList;
-  // }, [page, taskList.list]);
-  // const pageCount = Math.ceil(taskList.list.length / pageMaxLimit);
-  // const pageArr = new Array(pageCount).fill(0);
-  // const handlePageChange = (pg) => {
-  //   if (pg !== page) setPage(pg);
-  // };
+
+  // Getting list length
+  const taskListLength = useMemo(() => taskList.length, [taskList]);
+
+  // Pagination Part
+  const [page, setPage] = useState(0);
+  const showList = useMemo(() => {
+    const revList = taskList.slice();
+    const newList = [];
+    for (
+      let j = 0, i = page * pageMaxLimit + j;
+      j < pageMaxLimit;
+      j++, i = page * pageMaxLimit + j
+    ) {
+      revList[i] ? newList.push(revList[i]) : (j = pageMaxLimit);
+    }
+    return newList;
+  }, [page, taskList]);
+  const pageCount = Math.ceil(taskList.length / pageMaxLimit);
+  const pageArr = new Array(pageCount).fill(0);
+  const handlePageChange = (pg) => {
+    if (pg !== page) setPage(pg);
+  };
+
+  // Getting Table Head Row
+  const getTableHeadRow = (item, index) => {
+    const isAvailableAsc = item.settings.asc;
+    const { isAsc, field } = filters.asc;
+    return (
+      <th
+        className={`py-2 cursor-default ${
+          isAvailableAsc ? 'hover:bg-blue-800 hover:cursor-pointer' : ''
+        }`}
+        onClick={isAvailableAsc ? () => handleAscBtn(item) : null}
+        key={index}
+      >
+        {item.settings.title}
+        {isAvailableAsc ? (
+          typeof isAsc === 'boolean' && field === item.name ? (
+            isAsc ? (
+              <span> &#8595;</span>
+            ) : (
+              <span> &#8593;</span>
+            )
+          ) : (
+            <span> &#8593;&#8595;</span>
+          )
+        ) : null}
+      </th>
+    );
+  };
+  // Getting Table Row
   const getTableRow = (task, item, index) => {
     const settings = item.settings;
     let data = task[item.name];
@@ -66,6 +98,18 @@ const TaskList = () => {
     );
   };
 
+  // Use Effects To Save Page
+  useEffect(() => {
+    setPage(0);
+  }, [taskListLength]);
+  useEffect(() => {
+    setPage(localStorage.getItem('page') ? +localStorage.getItem('page') : 0);
+  }, []);
+  useEffect(() => {
+    localStorage.setItem('page', page);
+  }, [page, taskListLength]);
+
+  // Handle Functions
   const handleTaskEdit = (taskInfo) => {
     navigate('/edit/' + taskInfo.id, {
       state: { task: taskInfo, isValid: true, page: 'edit' },
@@ -86,48 +130,21 @@ const TaskList = () => {
   return (
     <div className="mx-5 my-5">
       <div className="mb-2">
-        <Filters />
+        <Filters filters={filters.detail} />
         <Search text={filters.search} />
       </div>
-
       <TaskListTable>
         <thead className="text-center bg-primary-color text-white font-bold">
           <tr>
             <th className="py-2 cursor-default">№</th>
             {showInTableTaskTypes.map((item, index) => {
-              const isAvailableAsc = item.settings.asc;
-              const { isAsc, field } = filters.asc;
-              return (
-                <th
-                  className={`py-2 cursor-default ${
-                    isAvailableAsc
-                      ? 'hover:bg-blue-800 hover:cursor-pointer'
-                      : ''
-                  }`}
-                  onClick={isAvailableAsc ? () => handleAscBtn(item) : null}
-                  key={index}
-                >
-                  {item.settings.title}
-                  {/* {isAvailableAsc ? <span> &#8593;&#8595;</span> : null} */}
-                  {isAvailableAsc ? (
-                    typeof isAsc === 'boolean' && field === item.name ? (
-                      isAsc ? (
-                        <span> &#8595;</span>
-                      ) : (
-                        <span> &#8593;</span>
-                      )
-                    ) : (
-                      <span> &#8593;&#8595;</span>
-                    )
-                  ) : null}
-                </th>
-              );
+              return getTableHeadRow(item, index);
             })}
             <th className="py-2 cursor-default">Actions</th>
           </tr>
         </thead>
         <tbody className="cursor-default bg-white [&>*>td]:py-2 [&>*>td]:px-3">
-          {taskList.map((task, index) => {
+          {showList.map((task, index) => {
             return (
               <tr key={index} className="hover:bg-custom-white cursor-pointer">
                 <td className="font-bold">{index + 1}</td>
@@ -151,7 +168,7 @@ const TaskList = () => {
           })}
         </tbody>
       </TaskListTable>
-      {/* <div className="flex justify-center gap-2 w-[100%] mt-3">
+      <div className="flex justify-center gap-2 w-[100%] mt-3">
         {pageArr.map((_, index) => (
           <div
             onClick={() => handlePageChange(index)}
@@ -165,7 +182,7 @@ const TaskList = () => {
             {index + 1}
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

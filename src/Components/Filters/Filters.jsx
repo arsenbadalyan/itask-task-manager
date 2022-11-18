@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import filtersLogo from '../../assets/images/actions/filters.png';
 import { taskListAction } from '../../services/actions/taskListAction';
 import {
@@ -7,12 +7,15 @@ import {
   listItemTypes,
 } from '../../services/reducers/taskListReducer';
 import taskListTypes from '../../services/types/taskListTypes';
-import Filter_ChBx from '../Checkbox/Filter_ChBx';
+import FilterChBx from '../Checkbox/FilterChBx';
 
-const Filters = () => {
-  const filters = useSelector(taskListAction[taskListTypes.READ_FILTER_FIELD]);
+const Filters = ({ filters }) => {
   const dispatch = useDispatch();
   const filtersDIV = useRef();
+  const checkFilterList = useMemo(
+    () => Object.values(filters).flat(),
+    [filters]
+  );
   const detailFilterList = useMemo(() => {
     return Object.values(listItemTypes).filter(
       (el) => el.settings.filters.hasFilters === true
@@ -22,7 +25,6 @@ const Filters = () => {
     console.log('clicked');
   };
   const handleCheckBoxClick = (e, name, value) => {
-    // console.log(e.target.checked);
     dispatch(
       taskListAction[taskListTypes.UPDATE_FILTER_DETAIL](
         name,
@@ -62,9 +64,16 @@ const Filters = () => {
                       ? item.list.map((listItem) => {
                           return (
                             <li key={listItem.value}>
-                              <Filter_ChBx
+                              <FilterChBx
                                 labelName={listItem.value}
                                 value={listItem.name}
+                                checked={
+                                  checkFilterList.some(
+                                    (el) => el === listItem.value
+                                  )
+                                    ? true
+                                    : false
+                                }
                                 onClick={(e) =>
                                   handleCheckBoxClick(
                                     e,

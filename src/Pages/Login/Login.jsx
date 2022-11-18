@@ -64,19 +64,19 @@ const Login = () => {
   const handleInputChange = (e, item) => {
     dispatch(item.dispatch(e.target.value));
     if (validationErrors[item.name].length > 0)
-      handleInputFieldsCheck(item.name);
+      handleInputFieldsCheck(item.name, true, e.target.value);
   };
-  const handleInputFieldsCheck = (inputType) => {
+  const handleInputFieldsCheck = (inputType, isCustom = false, val = '') => {
     const input = new Validation();
     let returnText = '';
     let returnValue = true;
     let validate = {};
     if (inputType === 'username') {
-      validate = input.validateSimpleInput(username, true);
+      validate = input.validateSimpleInput(isCustom ? val : username, true);
     } else if (inputType === 'password') {
-      validate = input.validatePassword(password);
+      validate = input.validatePassword(isCustom ? val : password);
     } else if (inputType === 'email') {
-      validate = input.validateEmail(email);
+      validate = input.validateEmail(isCustom ? val : email);
     }
     if (validate.type.length > 0) {
       returnValue = false;

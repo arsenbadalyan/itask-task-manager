@@ -1,6 +1,6 @@
 import useLabel from '../../hooks/useLabel';
 
-const Filter_ChBx = ({ labelName, value, onClick }) => {
+const FilterChBx = ({ labelName, value, checked, onClick }) => {
   const [label, labelID] = useLabel(value, labelName, '');
   return (
     <div>
@@ -8,8 +8,9 @@ const Filter_ChBx = ({ labelName, value, onClick }) => {
         type="checkbox"
         id={labelID}
         name={labelID}
+        defaultChecked={checked}
         value={value}
-        onClick={onClick}
+        onChange={onClick}
         className="mr-2"
       />
       {label}
@@ -17,4 +18,4 @@ const Filter_ChBx = ({ labelName, value, onClick }) => {
   );
 };
 
-export default Filter_ChBx;
+export default FilterChBx;

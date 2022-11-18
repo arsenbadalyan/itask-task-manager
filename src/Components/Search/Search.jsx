@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useInput from '../../hooks/useInput';
+import { useDispatch } from 'react-redux';
 import { taskListAction } from '../../services/actions/taskListAction';
 import taskListTypes from '../../services/types/taskListTypes';
 
 const Search = ({ text }) => {
   const [search, setSearch] = useState(text);
   const dispatch = useDispatch();
-  // const filter = useSelector();
   const handleSearchBarChange = (e) => {
     setSearch(e.target.value);
     dispatch(

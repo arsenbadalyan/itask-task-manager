@@ -335,9 +335,8 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
     [taskListTypes.UPDATE_FILTER_DETAIL]: () => {
       const { field, isChecked, value } = action.payload;
       if (filters.detail[field] === undefined) {
-        filters.detail[field] = new Array();
+        filters.detail[field] = [];
       }
-      // console.log(filters.detail[field]);
       if (isChecked) {
         filters.detail[field].push(value);
       } else {

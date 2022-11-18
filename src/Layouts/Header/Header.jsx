@@ -19,8 +19,7 @@ const Header = () => {
     return null;
   };
   const handleLogOut = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('taskList');
+    localStorage.clear();
     dispatch(taskListAction[taskListTypes.DELETE_ALL_STATE]);
     dispatch(changeSessionState(false));
     navigate('/login');
