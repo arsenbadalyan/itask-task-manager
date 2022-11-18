@@ -1,7 +1,6 @@
 import useLabel from '../../hooks/useLabel';
 
 const DateTimeLocal = ({ settings, options }) => {
-  console.log(settings);
   const [label, labelID] = useLabel(
     settings.name,
     settings.createEditField.title,

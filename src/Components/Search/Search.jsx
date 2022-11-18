@@ -4,8 +4,8 @@ import useInput from '../../hooks/useInput';
 import { taskListAction } from '../../services/actions/taskListAction';
 import taskListTypes from '../../services/types/taskListTypes';
 
-const Search = () => {
-  const [search, setSearch] = useState('');
+const Search = ({ text }) => {
+  const [search, setSearch] = useState(text);
   const dispatch = useDispatch();
   // const filter = useSelector();
   const handleSearchBarChange = (e) => {
@@ -15,10 +15,10 @@ const Search = () => {
     );
   };
   return (
-    <div className="w-[100%] mb-2 flex justify-end">
+    <div className="w-[100%] mb-2">
       <input
         type="text"
-        className="p-2 shadow-black-custom rounded-xl font-bold"
+        className="w-[100%] p-2 shadow-black-custom rounded-xl font-bold"
         value={search}
         onChange={handleSearchBarChange}
         placeholder="Search Task..."

@@ -9,9 +9,7 @@ export const searchText = (list, searchTxt = '') => {
   const searchAccessArr = Object.values(listItemTypes).filter(
     (el) => el.settings.search
   );
-  console.log(list);
   list = list.filter((item) => {
-    console.log(searchAccessArr);
     let check = false;
     for (let i = 0; i < searchAccessArr.length; i++) {
       const value = getItemValue(item[searchAccessArr[i].name]).toLowerCase();
@@ -25,10 +23,28 @@ export const searchText = (list, searchTxt = '') => {
   return list;
 };
 
+export const checkDetailFilters = (list, details) => {
+  const detailFilterList = Object.keys(details);
+  list = list.filter((item) => {
+    let filterMeCounter = 0;
+    detailFilterList.forEach((el, index) => {
+      let detailArr = details[el];
+      for (let i in detailArr) {
+        if (getItemValue(item[el]) === detailArr[i]) {
+          filterMeCounter++;
+          break;
+        }
+      }
+    });
+    if (filterMeCounter === detailFilterList.length) return item;
+  });
+  return list;
+};
+
 export const ascDesc = (list, asc) => {
   const { isAsc, field } = asc;
-  let sortStyle = -1;
-  if (!isAsc) sortStyle = 1;
+  let sortStyle = 1;
+  if (!isAsc) sortStyle *= -1;
   list = list.sort((a, b) => {
     a = getItemValue(a[field]);
     b = getItemValue(b[field]);
@@ -38,13 +54,13 @@ export const ascDesc = (list, asc) => {
 };
 
 export const checkFilters = (taskList) => {
-  // console.log('checking filters');
   const list = taskList.list;
   const filters = taskList.filters;
   let revList = list.slice().reverse();
   if (filters.search !== '') revList = searchText(revList, filters.search);
   if (typeof filters.asc.isAsc === 'boolean')
     revList = ascDesc(revList, filters.asc);
-  // console.log(taskList);
+  if (Object.keys(filters.detail).length > 0)
+    revList = checkDetailFilters(revList, filters.detail);
   return revList;
 };

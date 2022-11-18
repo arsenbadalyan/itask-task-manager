@@ -1,6 +1,20 @@
 import taskListTypes from '../types/taskListTypes';
 import { v4 as uuid } from 'uuid';
 import { getDate, getDateTimeLocal } from '../../utils/dateTime';
+import { toast } from 'react-toastify';
+
+// Notifications
+const notifyTaskDelete = () =>
+  toast.success('Task Deleted', {
+    position: 'top-right',
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: 0,
+    theme: 'dark',
+  });
 
 // Work With Data
 export const taskPlaceList = [
@@ -32,6 +46,13 @@ const createListItemType = (
   list,
 });
 
+export const filteringTypes = {
+  SELECT_LIST: {
+    name: 'select-list',
+    listType: 'checkbox',
+  },
+};
+
 export const listItemTypes = {
   ID: createListItemType(
     {
@@ -39,6 +60,9 @@ export const listItemTypes = {
       title: 'ID',
       asc: false,
       search: false,
+      filters: {
+        hasFilters: false,
+      },
       style: {
         classes: '',
         hasColor: false,
@@ -55,6 +79,9 @@ export const listItemTypes = {
       title: 'Name',
       asc: true,
       search: true,
+      filters: {
+        hasFilters: false,
+      },
       style: {
         classes: '',
         hasColor: false,
@@ -78,6 +105,9 @@ export const listItemTypes = {
       title: 'Description',
       asc: false,
       search: true,
+      filters: {
+        hasFilters: false,
+      },
       style: {
         classes: '',
         hasColor: false,
@@ -101,6 +131,11 @@ export const listItemTypes = {
       title: 'Place To Do',
       asc: true,
       search: true,
+      filters: {
+        hasFilters: true,
+        title: 'Select Place',
+        filterType: filteringTypes.SELECT_LIST,
+      },
       style: {
         classes: 'text-center',
         hasColor: false,
@@ -129,6 +164,11 @@ export const listItemTypes = {
       title: 'Status',
       asc: false,
       search: true,
+      filters: {
+        hasFilters: true,
+        title: 'Select Status',
+        filterType: filteringTypes.SELECT_LIST,
+      },
       style: {
         classes: 'text-center text-white font-bold',
         hasColor: true,
@@ -157,6 +197,9 @@ export const listItemTypes = {
       title: 'Finish Date',
       asc: true,
       search: true,
+      filters: {
+        hasFilters: false,
+      },
       style: {
         classes: 'text-center',
         hasColor: false,
@@ -208,6 +251,10 @@ const initialTaskListState = () => {
   return list;
 };
 
+const saveDataInLocalStorage = (curState) => {
+  localStorage.setItem('taskList', JSON.stringify(curState));
+};
+
 // Reducers
 export const taskListReducer = (state = initialTaskListState(), action) => {
   const type = action.type ?? '';
@@ -218,7 +265,7 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
     [taskListTypes.CREATE_NEW_TASK]: () => {
       let list = state.list;
       list.push(action.payload);
-      localStorage.setItem('taskList', JSON.stringify(state));
+      saveDataInLocalStorage(state);
       return {
         ...state,
         list,
@@ -244,6 +291,7 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
       let list = state.list;
       list = list.filter((listItem) => listItem.id !== action.payload.id);
       localStorage.setItem('taskList', JSON.stringify({ ...state, list }));
+      notifyTaskDelete();
       return {
         ...state,
         list,
@@ -251,23 +299,20 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
     },
     // Search Change
     [taskListTypes.UPDATE_FILTER_SEARCH]: () => {
-      let newFilters = Object.assign({}, filters);
-      newFilters.search = action.payload;
+      filters.search = action.payload;
+      saveDataInLocalStorage({ list, filters });
       return {
         ...state,
-        filters: newFilters,
+        filters,
       };
     },
     // Asc or Desc Change
     [taskListTypes.UPDATE_FILTER_ASC]: () => {
-      console.log(action);
-      console.log(filters);
       const oldField = filters.asc.field;
       let field = action.payload;
       let isAsc = filters.asc.isAsc;
       if (field !== oldField) {
         isAsc = true;
-        field = field;
       } else {
         if (isAsc === null) {
           isAsc = true;
@@ -279,7 +324,31 @@ export const taskListReducer = (state = initialTaskListState(), action) => {
         }
       }
       filters.asc = { isAsc, field };
-      console.log(filters);
+      saveDataInLocalStorage({ list, filters });
+      return {
+        ...state,
+        filters,
+      };
+    },
+
+    // Filter Detail
+    [taskListTypes.UPDATE_FILTER_DETAIL]: () => {
+      const { field, isChecked, value } = action.payload;
+      if (filters.detail[field] === undefined) {
+        filters.detail[field] = new Array();
+      }
+      // console.log(filters.detail[field]);
+      if (isChecked) {
+        filters.detail[field].push(value);
+      } else {
+        filters.detail[field] = filters.detail[field].filter(
+          (el) => el !== value
+        );
+        if (filters.detail[field].length === 0) {
+          delete filters.detail[field];
+        }
+      }
+      saveDataInLocalStorage({ list, filters });
       return {
         ...state,
         filters,

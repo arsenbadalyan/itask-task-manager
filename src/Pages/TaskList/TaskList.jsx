@@ -14,6 +14,7 @@ import deleteImage from '../../assets/images/actions/delete.png';
 import editImage from '../../assets/images/actions/edit.png';
 import { useNavigate } from 'react-router-dom';
 import { searchText } from '../../middleware/checkFilters';
+import Filters from '../../components/Filters/Filters';
 const TaskList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -84,14 +85,9 @@ const TaskList = () => {
 
   return (
     <div className="mx-5 my-5">
-      <div className="flex justify-between">
-        {/* <div>
-          <p>Filter</p>
-        </div>
-        <div>
-          <p>Search</p>
-        </div> */}
-        <Search />
+      <div className="mb-2">
+        <Filters />
+        <Search text={filters.search} />
       </div>
 
       <TaskListTable>

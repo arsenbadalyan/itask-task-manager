@@ -63,4 +63,16 @@ export const taskListAction = {
       payload: field,
     };
   },
+
+  // Detail Filter Change
+  [taskListTypes.UPDATE_FILTER_DETAIL]: (field, value, isChecked) => {
+    return {
+      type: taskListTypes.UPDATE_FILTER_DETAIL,
+      payload: {
+        field,
+        value,
+        isChecked,
+      },
+    };
+  },
 };
