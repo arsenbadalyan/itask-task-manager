@@ -67,7 +67,7 @@ const Filters = ({ filters }) => {
         className="mt-2 w-[100%] bg-custom-white rounded-xl shadow-black-custom overflow-hidden"
         ref={filterSpringRef}
       >
-        <div className="p-2 flex gap-3">
+        <div className="p-2 flex gap-3 justify-evenly">
           {detailFilterList.map((item, index) => {
             const detailFilter = item.settings.filters;
             return (

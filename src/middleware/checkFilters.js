@@ -19,6 +19,7 @@ export const searchText = (list, searchTxt = '') => {
       }
     }
     if (check) return item;
+    return false;
   });
   return list;
 };
@@ -37,6 +38,7 @@ export const checkDetailFilters = (list, details) => {
       }
     });
     if (filterMeCounter === detailFilterList.length) return item;
+    return false;
   });
   return list;
 };

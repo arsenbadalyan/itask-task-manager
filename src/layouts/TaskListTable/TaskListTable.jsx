@@ -1,8 +1,10 @@
 const TaskListTable = ({ children }) => {
   return (
-    <table className="w-[100%] [&>*>tr]:h-[40px] [&>*>*>td]:h-[40px]">
-      {children}
-    </table>
+    <div className="w-[100%] overflow-x-scroll">
+      <table className="w-[100%] [&>*>tr]:h-[40px] [&>*>*>td]:min-h-[40px]">
+        {children}
+      </table>
+    </div>
   );
 };
 

@@ -53,7 +53,7 @@ const TaskList = () => {
     const { isAsc, field } = filters.asc;
     return (
       <th
-        className={`py-2 cursor-default ${
+        className={`p-2 whitespace-nowrap cursor-default min-w-max ${
           isAvailableAsc ? 'hover:bg-blue-800 hover:cursor-pointer' : ''
         }`}
         onClick={isAvailableAsc ? () => handleAscBtn(item) : null}
@@ -84,7 +84,7 @@ const TaskList = () => {
     return (
       <td
         key={index + index * 3}
-        className={`${settings.style.classes} ${
+        className={`min-w-max ${settings.style.classes} ${
           filters.asc.field === item.name ? 'bg-custom-gray font-bold' : ''
         }`}
         style={
@@ -136,11 +136,15 @@ const TaskList = () => {
       <TaskListTable>
         <thead className="text-center bg-primary-color text-white font-bold">
           <tr>
-            <th className="py-2 cursor-default">№</th>
+            <th className="p-2 cursor-default whitespace-nowrap min-w-max">
+              №
+            </th>
             {showInTableTaskTypes.map((item, index) => {
               return getTableHeadRow(item, index);
             })}
-            <th className="py-2 cursor-default">Actions</th>
+            <th className="p-2 cursor-default whitespace-nowrap min-w-max">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody className="cursor-default bg-white [&>*>td]:py-2 [&>*>td]:px-3">
@@ -151,17 +155,19 @@ const TaskList = () => {
                 {showInTableTaskTypes.map((item, index) => {
                   return getTableRow(task, item, index);
                 })}
-                <td className="flex justify-center items-center gap-2 [&>img]:h-[100%] [&>img]:cursor-pointer hover-animate-action">
-                  <img
-                    src={editImage}
-                    alt="edit"
-                    onClick={() => handleTaskEdit(task)}
-                  />
-                  <img
-                    src={deleteImage}
-                    alt="delete"
-                    onClick={() => handleTaskDelete(task)}
-                  />
+                <td className="min-w-max min-h-max hover-animate-action">
+                  <div className="flex sm:flex-row flex-wrap flex-col justify-center items-center gap-2 [&>img]:h-[30px] [&>img]:cursor-pointer">
+                    <img
+                      src={editImage}
+                      alt="edit"
+                      onClick={() => handleTaskEdit(task)}
+                    />
+                    <img
+                      src={deleteImage}
+                      alt="delete"
+                      onClick={() => handleTaskDelete(task)}
+                    />
+                  </div>
                 </td>
               </tr>
             );
