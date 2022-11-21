@@ -1,5 +1,6 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSpring, animated } from 'react-spring';
 import filtersLogo from '../../assets/images/actions/filters.png';
 import { taskListAction } from '../../services/actions/taskListAction';
 import {
@@ -11,7 +12,6 @@ import FilterChBx from '../Checkbox/FilterChBx';
 
 const Filters = ({ filters }) => {
   const dispatch = useDispatch();
-  const filtersDIV = useRef();
   const checkFilterList = useMemo(
     () => Object.values(filters).flat(),
     [filters]
@@ -21,8 +21,24 @@ const Filters = ({ filters }) => {
       (el) => el.settings.filters.hasFilters === true
     );
   }, []);
+  // Filter Spring Animation
+  const [filterSpringToggle, setFilterSpringToggle] = useState(false);
+  const filterSpringRef = useRef();
+  const filterSpring = useSpring({
+    from: {
+      transform: 'translateX(-200%)',
+      height: 0,
+    },
+    config: {
+      tension: 150,
+    },
+    to: {
+      height: filterSpringToggle ? filterSpringRef.current.scrollHeight : 0,
+      transform: filterSpringToggle ? 'translateX(0)' : 'translateX(-200%)',
+    },
+  });
   const handleFiltersOpenClose = () => {
-    console.log('clicked');
+    setFilterSpringToggle(!filterSpringToggle);
   };
   const handleCheckBoxClick = (e, name, value) => {
     dispatch(
@@ -46,10 +62,10 @@ const Filters = ({ filters }) => {
         />
         <p className="text-lg font-bold">Filters</p>
       </button>
-      <div
-        // style={{ height: 0, overflow: 'hidden' }}
-        className="relative mt-2 w-[100%] bg-custom-white rounded-xl shadow-black-custom transition-all"
-        ref={filtersDIV}
+      <animated.div
+        style={filterSpring}
+        className="mt-2 w-[100%] bg-custom-white rounded-xl shadow-black-custom overflow-hidden"
+        ref={filterSpringRef}
       >
         <div className="p-2 flex gap-3">
           {detailFilterList.map((item, index) => {
@@ -92,7 +108,7 @@ const Filters = ({ filters }) => {
             );
           })}
         </div>
-      </div>
+      </animated.div>
     </div>
   );
 };
