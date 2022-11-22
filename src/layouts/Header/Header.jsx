@@ -30,21 +30,29 @@ const Header = () => {
         <img src={logo} alt="logo" />
       </div>
       {isActiveUser ? (
-        <div className="flex flex-row gap-3 font-bold hover:[&>a]:bg-primary-color hover:[&>a]:text-white hover:[&>a]:shadow-[0_0_5px_0_gray] [&>a]:px-3 cursor-pointer">
-          {checkPath() === 'tasks' || (checkPath() === '' && isActiveUser) ? (
-            <>
-              <NavLink to="/create" state={{ isValid: true, page: 'create' }}>
-                Create New Task
-              </NavLink>
-              <span>|</span>
-            </>
-          ) : checkPath() === 'create' || checkPath() === 'edit' ? (
-            <>
-              <NavLink to="/tasks">Back</NavLink>
-              <span>|</span>
-            </>
-          ) : null}
-          <NavLink onClick={handleLogOut}>Log Out</NavLink>
+        <div>
+          {/* <div className="burger-menu md:hidden"> */}
+          <div className="hidden">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="flex flex-row gap-3 font-bold hover:[&>a]:bg-primary-color hover:[&>a]:text-white hover:[&>a]:shadow-[0_0_5px_0_gray] [&>a]:px-3 cursor-pointer">
+            {checkPath() === 'tasks' || (checkPath() === '' && isActiveUser) ? (
+              <>
+                <NavLink to="/create" state={{ isValid: true, page: 'create' }}>
+                  Create New Task
+                </NavLink>
+                <span>|</span>
+              </>
+            ) : checkPath() === 'create' || checkPath() === 'edit' ? (
+              <>
+                <NavLink to="/tasks">Back</NavLink>
+                <span>|</span>
+              </>
+            ) : null}
+            <NavLink onClick={handleLogOut}>Log Out</NavLink>
+          </div>
         </div>
       ) : null}
     </div>

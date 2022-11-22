@@ -195,7 +195,7 @@ export const listItemTypes = {
     {
       showInTable: true,
       title: 'Finish Date',
-      asc: true,
+      asc: false,
       search: true,
       filters: {
         hasFilters: false,

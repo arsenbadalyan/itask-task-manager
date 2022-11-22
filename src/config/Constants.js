@@ -1,7 +1,7 @@
 // Password Correct Length For Validation
 export const passwordCorrectLength = 3;
 // Task List Page max Limit
-export const pageMaxLimit = 3;
+export const pageMaxLimit = 1;
 
 // Example List
 export const tempList = [

@@ -1,4 +1,4 @@
-import { checkFilters } from '../../middleware/checkFilters';
+import { checkFilters } from '../../hooks/checkFilters';
 import taskListTypes from '../types/taskListTypes';
 export const taskListAction = {
   // -------------- SELECTORS -----------------
