@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# iTask - Simple Task Manager App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+iTask is a straightforward task manager application built using React, Tailwind CSS, and Redux. It provides users with the ability to filter tasks, order them by columns, change task states, edit task details, and remove tasks as needed.
 
-## Available Scripts
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Task Filtering:** Filter tasks based on different criteria.
+- **Column Ordering:** Easily order tasks by columns.
+- **State Management:** Change task states (e.g., to-do, in progress, completed).
+- **Task Editing:** Modify task details as needed.
+- **Task Removal:** Remove tasks that are no longer needed.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To run the iTask app locally, follow these steps:
 
-### `npm test`
+1. Clone the repository: `git clone https://github.com/arsenbadalyan/itask-task-manager.git`
+2. Navigate to the project directory: `cd itask-task-manager`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm start`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
 
-### `npm run build`
+1. Open the app in your web browser.
+2. Explore the task manager features:
+   - Use filters to narrow down tasks.
+   - Drag and drop tasks to reorder them.
+   - Change task states using the provided controls.
+   - Edit task details by clicking on the task.
+   - Remove tasks using the delete option.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screenshots
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Sign In Page](/screenshots/sign-in.png)
+*Sign In Page - Allow users to sign in and access their tasks.*
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Tasks Table](/screenshots/tasks-table.png)
+*Tasks Table - View and manage tasks with filtering, ordering, and state changes.*
 
-### `npm run eject`
+![Task Editor Page](/screenshots/manage-task.png)
+*Task Editor Page - Edit task details with a dedicated task editor page.*
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<!-- Add more screenshots and captions as needed. -->
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Feel free to contribute to the development of iTask by following these steps:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/new-feature`
+3. Make your changes and commit: `git commit -m "Add new feature"`
+4. Push to the branch: `git push origin feature/new-feature`
+5. Open a pull request.
 
-## Learn More
+## License
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project is licensed under the [MIT License](LICENSE).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
